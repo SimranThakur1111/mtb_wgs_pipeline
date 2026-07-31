@@ -31,9 +31,25 @@ Defaults already set in `config.sh`: `THREADS=3` (leaves 1 thread free), `GATK_M
 
 ## Requirements
 
+Clone the repo, then create the environment in one command:
+
+```bash
+git clone <your-repo-url>
+cd <repo-name>
+conda env create -f environment.yml
+conda activate mtb-ngs
+```
+
+If you hit `ModuleNotFoundError` for matplotlib/pandas/PIL despite the env being active, it usually means a `~/.local` user-site Python package is shadowing the conda env. Fix:
+```bash
+conda env config vars set PYTHONNOUSERSITE=1 -n mtb-ngs
+conda deactivate && conda activate mtb-ngs
+```
+
+(Manual install without the yml file, if preferred:)
 ```bash
 conda create -n mtb-ngs -c bioconda -c conda-forge \
-    fastqc fastp bwa samtools gatk4 mosdepth tb-profiler snpeff -y
+    fastqc fastp bwa samtools gatk4 mosdepth tb-profiler snpeff sra-tools matplotlib pandas pillow -y
 conda activate mtb-ngs
 ```
 
@@ -115,6 +131,33 @@ results/
 - **Hard filters, not VQSR/BQSR**: there's no curated truth-set VCF for MTB, so GATK's standard best-practice hard-filter thresholds (QD, FS, MQ, SOR, DP) are used instead, same approach as your dissertation pipeline.
 - **TB-Profiler** replaces a custom resistance-lookup step — it calls lineage (via SNP barcode) and predicts resistance to first/second-line drugs directly from FASTQs, cross-referenced against curated resistance mutation databases (rpoB, katG, gyrA, etc.).
 - Pipeline is idempotent per-sample and safe to re-run — reference indexing is skipped if already done.
+
+## Post-analysis plots
+
+`generate_mtb_plots.py` reads pipeline outputs and produces publication-ready plots (genome coverage, depth distribution, variant summary, drug-resistance profile, fastp QC before/after):
+
+```bash
+python generate_mtb_plots.py -s SRR786503 -r ./results
+```
+
+Plots are saved to `results/09_plots/`.
+
+## Sample results (SRR786503, lineage2.2.1 / Beijing)
+
+**Genome-wide coverage** — mean depth 157x
+![Genome coverage](docs/plots/genome_coverage.png)
+
+**Depth distribution**
+![Depth distribution](docs/plots/depth_distribution.png)
+
+**Variant calls (PASS vs filtered)**
+![Variant summary](docs/plots/variant_summary.png)
+
+**Drug-resistance profile** — MDR (Rifampicin, Isoniazid, Ethambutol resistant)
+![Resistance profile](docs/plots/resistance_profile.png)
+
+**Read QC before/after trimming**
+![Fastp QC](docs/plots/fastp_qc.png)
 
 ## Extending
 
