@@ -1,0 +1,45 @@
+# Raw sequencing reads
+raw_reads/
+*.fastq.gz
+*.fastq
+*.sra
+*.aria2
+
+# Reference genome + indices
+reference/
+*.fasta
+*.fa
+*.fna
+*.dict
+*.fasta.*
+*.fa.*
+ncbi_dataset/
+ncbi_dataset.zip
+
+# Pipeline outputs
+results/
+*.bam
+*.bam.bai
+*.vcf.gz
+*.vcf.gz.csi
+*.vcf.gz.tbi
+*.g.vcf.gz
+
+# Plots
+*.png
+
+# Downloaded tool source/builds (not part of this pipeline's code)
+FastQC/
+samtools-develop/
+SRR786503/
+
+# ENA/SRA helper scripts
+ena-file-download-selected-files-*.sh
+
+# Conda / Python
+__pycache__/
+*.pyc
+
+# Logs
+logs/
+*.log

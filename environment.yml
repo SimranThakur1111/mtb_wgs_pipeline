@@ -1,0 +1,19 @@
+name: mtb-ngs
+channels:
+  - bioconda
+  - conda-forge
+  - defaults
+dependencies:
+  - fastqc
+  - fastp
+  - bwa
+  - samtools
+  - gatk4
+  - mosdepth
+  - tb-profiler
+  - snpeff
+  - sra-tools
+  - matplotlib
+  - pandas
+  - pillow
+  - numpy
