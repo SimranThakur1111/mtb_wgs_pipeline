@@ -43,3 +43,7 @@ __pycache__/
 # Logs
 logs/
 *.log
+
+# Allow plots for documentation
+
+# Allow plots for documentation
